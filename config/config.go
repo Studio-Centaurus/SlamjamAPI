@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -20,8 +21,8 @@ func LoadEnv() {
 		log.Fatal("Error loading env")
 	}
 
-	// AppConfig := Config{
-	// 	JWTSecret: os.Getenv("JWTSECRET"),		
-	// }
+	AppConfig = Config{
+		JWTSecret: os.Getenv("JWTSecret"),
+	}
 
 }
