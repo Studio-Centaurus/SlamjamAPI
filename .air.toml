@@ -1,0 +1,45 @@
+root = "."
+testdata_dir = "testdata"
+tmp_dir = "tmp"
+
+# Config file for Air
+[build]
+bin = "/tmp/slampjapi_bin"                # Binary name
+cmd = "go build -o ./tmp/slampjapi_bin ./cmd/main.go"   # Build command
+include_ext = ["go", "tmpl", "html"] # File extensions to watch
+exclude_dir = ["tmp", "vendor"]      # Directories to exclude
+exclude_ext = ["git", "test"]        # Extensions to exclude
+exclude_glob = ["*_test.go"]         # Patterns to exclude
+follow_symlink = true                # Follow symlinks
+full_bin = "tmp/slampjapi_bin"           # Path to binary
+kill_signal = "kill"                 # Signal to use for killing process
+log = "tmp/air.log"                  # Log file location
+main_dir = "."                       # Main directory
+poll_interval = 500                  # Poll interval in milliseconds
+
+# Configuration for running the binary
+[run]
+cmd = "./slampjapi_bin"
+
+[color]
+  app = ""
+  build = "yellow"
+  main = "magenta"
+  runner = "green"
+  watcher = "cyan"
+
+[log]
+  main_only = false
+  time = false
+
+[misc]
+  clean_on_exit = false
+
+[proxy]
+  app_port = 0
+  enabled = false
+  proxy_port = 0
+
+[screen]
+  clear_on_rebuild = false
+  keep_scroll = true
