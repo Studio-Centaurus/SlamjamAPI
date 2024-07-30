@@ -11,11 +11,11 @@ import (
 )
 
 func HashPassword(pw string) (string, error) {
-	hashedPassoword, err := bcrypt.GenerateFromPassword([]byte(pw), bcrypt.DefaultCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(pw), bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
 	}
-	return string(hashedPassoword), nil
+	return string(hashedPassword), nil
 }
 
 func CreateJwtToken(user models.User, c *fiber.Ctx) error {

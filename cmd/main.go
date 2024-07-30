@@ -7,7 +7,6 @@ import (
 	_ "github.com/Studio-Centaurus/SlamjamAPI/docs"
 	"github.com/Studio-Centaurus/SlamjamAPI/repos"
 	"github.com/Studio-Centaurus/SlamjamAPI/routes"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -33,5 +32,8 @@ func main() {
 
 	routes.Setup(app, userController)
 
-	app.Listen(":8000")
+	err := app.Listen(":8000")
+	if err != nil {
+		return
+	}
 }

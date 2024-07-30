@@ -21,11 +21,11 @@ func (r *UserRepository) CreateUser(user models.User) error {
 	}
 
 	log.Printf("Creating user: %+v\n", user)
-	hashedPassoword, err := utils.HashPassword(user.Password)
+	hashedPassword, err := utils.HashPassword(user.Password)
 	if err != nil {
-		log.Println("errror hasehing passwond")
+		log.Println("error hashing password")
 	}
-	user.Password = hashedPassoword
+	user.Password = hashedPassword
 
 	if err := r.DB.Create(&user).Error; err != nil {
 		log.Println("Error creating user:", err)
@@ -45,7 +45,7 @@ func (r *UserRepository) FindByCredentials(username, password string) (*models.U
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
-		return nil, errors.New("passwod incorect")
+		return nil, errors.New("password incorrect")
 	}
 
 	return &user, nil

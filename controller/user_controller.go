@@ -11,7 +11,7 @@ type UserController struct {
 	Repo *repos.UserRepository
 }
 
-// Sighup godoc
+// Signup godoc
 // @Summary sighup a new user
 // @Tages user
 // @Accept mpfd

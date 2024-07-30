@@ -9,7 +9,7 @@ import (
 
 type Config struct {
 	JWTSecret string
-	DB_URl    string
+	DbUrl     string
 }
 
 var AppConfig Config
@@ -23,7 +23,7 @@ func LoadEnv() {
 
 	AppConfig = Config{
 		JWTSecret: os.Getenv("JWTSecret"),
-		DB_URl:    os.Getenv("DB_URL"),
+		DbUrl:     os.Getenv("DB_URL"),
 	}
 
 }
