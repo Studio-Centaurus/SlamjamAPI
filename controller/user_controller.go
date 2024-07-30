@@ -34,6 +34,15 @@ func (c *UserController) Signup(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(user)
 }
 
+// Login godoc
+// @Summary Login a user
+// @Tags user
+// @Accept mpfd
+// @Produce json
+// @Param loginRequest body models.LoginRequest true "Login Request"
+// @Success 200 {object} models.SuccessResponse
+// @Failure 502 {object} models.ErrorResponse
+// @Router /user/login [post]
 func (c *UserController) Login(ctx *fiber.Ctx) error {
 	loginRequest := new(models.LoginRequest)
 	if err := ctx.BodyParser(loginRequest); err != nil {
@@ -48,6 +57,12 @@ func (c *UserController) Login(ctx *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return utils.CreateJwtToken(*user, ctx)
-
+	if err := utils.CreateJwtToken(*user, ctx); err != nil {
+		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Login successful",
+	})
 }

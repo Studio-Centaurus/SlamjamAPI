@@ -17,3 +17,12 @@ type LoginRequest struct {
 type LoginResponse struct {
 	Token string `json:"token"`
 }
+
+type SuccessResponse struct {
+	Message string `json:"message"`
+}
+
+// ErrorResponse represents an error response
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
