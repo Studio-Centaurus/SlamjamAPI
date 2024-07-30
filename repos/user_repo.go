@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/Studio-Centaurus/SlamjamAPI/models"
+	"github.com/Studio-Centaurus/SlamjamAPI/utils"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -19,6 +21,11 @@ func (r *UserRepository) CreateUser(user models.User) error {
 	}
 
 	log.Printf("Creating user: %+v\n", user)
+	hashedPassoword, err := utils.HashPassword(user.Password)
+	if err != nil {
+		log.Println("errror hasehing passwond")
+	}
+	user.Password = hashedPassoword
 
 	if err := r.DB.Create(&user).Error; err != nil {
 		log.Println("Error creating user:", err)
@@ -26,4 +33,21 @@ func (r *UserRepository) CreateUser(user models.User) error {
 	}
 	log.Println("User created successfully")
 	return nil
+}
+
+func (r *UserRepository) FindByCredentials(username, password string) (*models.User, error) {
+
+	var user models.User
+
+	res := r.DB.Where("Username = ?", username).First(&user)
+	if res.Error != nil {
+		log.Println("user not found")
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		return nil, errors.New("passwod incorect")
+	}
+
+	return &user, nil
+
 }
