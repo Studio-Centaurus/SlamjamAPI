@@ -10,6 +10,13 @@ type UserController struct {
 	Repo *repos.UserRepository
 }
 
+// Sighup godoc
+// @Summary sighup a new user
+// @Tages users
+// @Accept mpfd
+// @produce json
+// @Success 200 {array} models.User
+// @Router /user/signup [post]
 func (c *UserController) Signup(ctx *fiber.Ctx) error {
 	var user models.User
 	if err := ctx.BodyParser(&user); err != nil {
