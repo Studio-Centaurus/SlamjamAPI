@@ -24,7 +24,7 @@ func main() {
 
 	db.Connect()
 
-	userRepo := &repos.UserRepository{DB: db.DB}
+	userRepo := &repos.UserRepositoryImpl{DB: db.DB}
 
 	userController := &controller.UserController{Repo: userRepo}
 

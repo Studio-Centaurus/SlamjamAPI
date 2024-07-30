@@ -8,7 +8,7 @@ import (
 )
 
 type UserController struct {
-	Repo *repos.UserRepository
+	Repo repos.UserRepository
 }
 
 // Signup godoc
@@ -57,12 +57,14 @@ func (c *UserController) Login(ctx *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	if err := utils.CreateJwtToken(*user, ctx); err != nil {
+	token, err := utils.CreateJwtToken(*user)
+	if err != nil {
 		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "Login successful",
+		"token":   token,
 	})
 }
