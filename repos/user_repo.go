@@ -39,7 +39,7 @@ func (r *UserRepository) FindByCredentials(username, password string) (*models.U
 
 	var user models.User
 
-	res := r.DB.Where("Username = ?", username).First(&user)
+	res := r.DB.Where("user_name= ?", username).First(&user)
 	if res.Error != nil {
 		log.Println("user not found")
 	}
