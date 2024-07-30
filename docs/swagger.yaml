@@ -1,4 +1,83 @@
+basePath: /
+definitions:
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.SuccessResponse:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+    type: object
+  models.User:
+    properties:
+      name:
+        example: john
+        type: string
+      password:
+        type: string
+      username:
+        example: johnPork
+        type: string
+    type: object
+host: localhost:8000
 info:
   contact: {}
-paths: {}
+  description: api to serve user info
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: SlamjamAPI
+  version: "1.0"
+paths:
+  /user/login:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Login Request
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "502":
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Login a user
+      tags:
+      - user
+  /user/signup:
+    post:
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: sighup a new user
 swagger: "2.0"

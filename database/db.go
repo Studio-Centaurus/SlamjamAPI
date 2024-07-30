@@ -12,7 +12,7 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	dsn := config.AppConfig.JWTSecret
+	dsn := config.AppConfig.DbUrl
 	var err error
 	DB, err = gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,

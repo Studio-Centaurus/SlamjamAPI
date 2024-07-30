@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/Studio-Centaurus/SlamjamAPI/models"
 	"github.com/Studio-Centaurus/SlamjamAPI/repos"
+	"github.com/Studio-Centaurus/SlamjamAPI/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -10,6 +11,13 @@ type UserController struct {
 	Repo *repos.UserRepository
 }
 
+// Signup godoc
+// @Summary sighup a new user
+// @Tages user
+// @Accept mpfd
+// @produce json
+// @Success 200 {array} models.User
+// @Router /user/signup [post]
 func (c *UserController) Signup(ctx *fiber.Ctx) error {
 	var user models.User
 	if err := ctx.BodyParser(&user); err != nil {
@@ -24,4 +32,37 @@ func (c *UserController) Signup(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(user)
+}
+
+// Login godoc
+// @Summary Login a user
+// @Tags user
+// @Accept mpfd
+// @Produce json
+// @Param loginRequest body models.LoginRequest true "Login Request"
+// @Success 200 {object} models.SuccessResponse
+// @Failure 502 {object} models.ErrorResponse
+// @Router /user/login [post]
+func (c *UserController) Login(ctx *fiber.Ctx) error {
+	loginRequest := new(models.LoginRequest)
+	if err := ctx.BodyParser(loginRequest); err != nil {
+		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	user, err := c.Repo.FindByCredentials(loginRequest.Username, loginRequest.Password)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	if err := utils.CreateJwtToken(*user, ctx); err != nil {
+		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Login successful",
+	})
 }
