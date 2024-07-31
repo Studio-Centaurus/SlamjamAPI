@@ -1,10 +1,5 @@
 basePath: /
 definitions:
-  models.ErrorResponse:
-    properties:
-      error:
-        type: string
-    type: object
   models.LoginRequest:
     properties:
       password:
@@ -12,7 +7,7 @@ definitions:
       username:
         type: string
     type: object
-  models.SuccessResponse:
+  models.LoginResponse:
     properties:
       message:
         type: string
@@ -30,6 +25,13 @@ definitions:
         example: johnPork
         type: string
     type: object
+  models.UserRequest:
+    properties:
+      id:
+        type: string
+      username:
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact: {}
@@ -41,6 +43,27 @@ info:
   title: SlamjamAPI
   version: "1.0"
 paths:
+  /user/GetUser:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: User Request
+        in: body
+        name: UserRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Get a user
+      tags:
+      - user
   /user/login:
     post:
       consumes:
@@ -58,11 +81,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.SuccessResponse'
-        "502":
-          description: Bad Gateway
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.LoginResponse'
       summary: Login a user
       tags:
       - user

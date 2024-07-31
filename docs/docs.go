@@ -20,6 +20,39 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/user/GetUser": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get a user",
+                "parameters": [
+                    {
+                        "description": "User Request",
+                        "name": "UserRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "consumes": [
@@ -47,13 +80,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.SuccessResponse"
-                        }
-                    },
-                    "502": {
-                        "description": "Bad Gateway",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.LoginResponse"
                         }
                     }
                 }
@@ -83,14 +110,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "models.LoginRequest": {
             "type": "object",
             "properties": {
@@ -102,7 +121,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SuccessResponse": {
+        "models.LoginResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -126,6 +145,17 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "example": "johnPork"
+                }
+            }
+        },
+        "models.UserRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         }

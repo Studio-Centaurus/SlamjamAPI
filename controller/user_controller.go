@@ -52,8 +52,7 @@ func (c *UserController) Signup(ctx *fiber.Ctx) error {
 // @Accept mpfd
 // @Produce json
 // @Param loginRequest body models.LoginRequest true "Login Request"
-// @Success 200 {object} models.SuccessResponse
-// @Failure 502 {object} models.ErrorResponse
+// @Success 200 {object} models.LoginResponse
 // @Router /user/login [post]
 func (c *UserController) Login(ctx *fiber.Ctx) error {
 	loginRequest := new(models.LoginRequest)
@@ -76,8 +75,8 @@ func (c *UserController) Login(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "Login successful",
-		"token":   token,
+		"Token":   token,
+		"Message": "user has logged in",
 	})
 }
 
@@ -88,7 +87,6 @@ func (c *UserController) Login(ctx *fiber.Ctx) error {
 // @Produce json
 // @Param UserRequest body models.UserRequest true "User Request"
 // @Success 200 {object} models.User
-// @Failure 502 {object} models.ErrorResponse
 // @Router /user/GetUser [post]
 func (c *UserController) GetUser(ctx *fiber.Ctx) error {
 	userRequest := new(models.UserRequest)
