@@ -14,4 +14,5 @@ func Setup(app *fiber.App, userController *controller.UserController) {
 
 	app.Post("/user/signup", userController.Signup)
 	app.Post("/user/login", userController.Login)
+	app.Post("/user/getUser", userController.GetUser)
 }

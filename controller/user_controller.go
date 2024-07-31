@@ -80,3 +80,32 @@ func (c *UserController) Login(ctx *fiber.Ctx) error {
 		"token":   token,
 	})
 }
+
+// GetUser godoc
+// @Summary Get a user
+// @Tags user
+// @Accept mpfd
+// @Produce json
+// @Param UserRequest body models.UserRequest true "User Request"
+// @Success 200 {object} models.User
+// @Failure 502 {object} models.ErrorResponse
+// @Router /user/GetUser [post]
+func (c *UserController) GetUser(ctx *fiber.Ctx) error {
+	userRequest := new(models.UserRequest)
+	if err := ctx.BodyParser(userRequest); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	user, err := c.Repo.FindUserByNameAndID(userRequest.Username, userRequest.ID)
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"user": user,
+	})
+
+}

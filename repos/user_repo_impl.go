@@ -50,3 +50,25 @@ func (r *UserRepositoryImpl) FindByCredentials(username, password string) (*mode
 
 	return &user, nil
 }
+
+func (r *UserRepositoryImpl) FindUserByNameAndID(username, id string) (*models.User, error) {
+	log.Println(username)
+	log.Println(id)
+	var user models.User
+	var res *gorm.DB
+	if username != "" {
+		res = r.DB.Where("user_name = ?", username).First(&user)
+		if res.Error != nil {
+			log.Println("username not found")
+		}
+		return &user, nil
+	}
+	if id != "" {
+		res = r.DB.Where("id = ?", id).First(&user)
+		if res.Error != nil {
+			log.Println("user not found")
+		}
+		return &user, nil
+	}
+	return nil, errors.New("no user with credietials have been found")
+}

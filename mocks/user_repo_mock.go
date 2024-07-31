@@ -18,3 +18,8 @@ func (m *MockUserRepository) FindByCredentials(username, password string) (*mode
 	args := m.Called(username, password)
 	return args.Get(0).(*models.User), args.Error(1)
 }
+
+func (m *MockUserRepository) FindUserByNameAndID(username, id string) (*models.User, error) {
+	args := m.Called(username, id)
+	return args.Get(0).(*models.User), args.Error(1)
+}
