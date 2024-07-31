@@ -88,22 +88,29 @@ func (c *UserController) Login(ctx *fiber.Ctx) error {
 // @Param UserRequest body models.UserRequest true "User Request"
 // @Success 200 {object} models.User
 // @Router /user/GetUser [post]
-func (c *UserController) GetUser(ctx *fiber.Ctx) error {
-	userRequest := new(models.UserRequest)
-	if err := ctx.BodyParser(userRequest); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-
-	user, err := c.Repo.FindUserByNameAndID(userRequest.Username, userRequest.ID)
+func (c *UserController) GetUsername(ctx *fiber.Ctx) error {
+	usernmme := ctx.Params("username")
+	user, err := c.Repo.FindUserByUsername(usernmme)
 	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
-	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+	return ctx.JSON(fiber.Map{
 		"user": user,
 	})
 
+}
+
+func (c *UserController) GetId(ctx *fiber.Ctx) error {
+	id := ctx.Params("id")
+	user, err := c.Repo.FindUserById(id)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.JSON(fiber.Map{
+		"user": user,
+	})
 }
