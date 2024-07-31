@@ -31,7 +31,19 @@ func (c *UserController) Signup(ctx *fiber.Ctx) error {
 			"error": "could not create user",
 		})
 	}
-	return ctx.Status(fiber.StatusOK).JSON(user)
+	NewUser, err := c.Repo.FindByCredentials(user.UserName, user.Password)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	token, err := utils.CreateJwtToken(*NewUser)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadGateway).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(user, token)
 }
 
 // Login godoc
