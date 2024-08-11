@@ -22,7 +22,7 @@ func Connect() {
 		log.Fatalf("failed to connect database: %v", err)
 	}
 
-	err = DB.AutoMigrate(&models.User{})
+	err = DB.AutoMigrate(&models.User{}, &models.League{}, &models.Match{}, &models.Team{})
 	if err != nil {
 		log.Fatalf("failed to migrate database: %v", err)
 	}

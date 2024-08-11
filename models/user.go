@@ -8,6 +8,7 @@ type User struct {
 	Name       string `json:"name" example:"john"`
 	UserName   string `json:"username" example:"johnPork"`
 	Password   string `json:"password"`
+	Teams      []Team `gorm:"many2many:team_members;"`
 }
 type LoginRequest struct {
 	Username string `json:"username"`

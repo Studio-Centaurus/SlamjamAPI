@@ -30,6 +30,8 @@ func main() {
 
 	app := fiber.New()
 
+	// jwt := middlewares.NewAuthMiddleware(config.Secret)
+
 	routes.Setup(app, userController)
 
 	err := app.Listen(":8000")

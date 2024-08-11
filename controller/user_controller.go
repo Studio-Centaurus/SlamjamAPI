@@ -80,14 +80,14 @@ func (c *UserController) Login(ctx *fiber.Ctx) error {
 	})
 }
 
-// GetUser godoc
-// @Summary Get a user
+// GetUsername godoc
+// @Summary Get a user by username
 // @Tags user
 // @Accept mpfd
 // @Produce json
 // @Param UserRequest body models.UserRequest true "User Request"
 // @Success 200 {object} models.User
-// @Router /user/GetUser [post]
+// @Router /user/username/:username [get]
 func (c *UserController) GetUsername(ctx *fiber.Ctx) error {
 	usernmme := ctx.Params("username")
 	user, err := c.Repo.FindUserByUsername(usernmme)
@@ -102,6 +102,14 @@ func (c *UserController) GetUsername(ctx *fiber.Ctx) error {
 
 }
 
+// GetUserById godoc
+// @Summary Get a user by id
+// @Tags user
+// @Accept mpfd
+// @Produce json
+// @Param UserRequest body models.UserRequest true "User Request"
+// @Success 200 {object} models.User
+// @Router /user/username/:id [get]
 func (c *UserController) GetId(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
 	user, err := c.Repo.FindUserById(id)
