@@ -25,14 +25,15 @@ func main() {
 	db.Connect()
 
 	userRepo := &repos.UserRepositoryImpl{DB: db.DB}
-
+	teamRepo := &repos.TeamRepositoryImpl{DB: db.DB}
 	userController := &controller.UserController{Repo: userRepo}
+	teamController := &controller.TeamController{Repo: teamRepo}
 
 	app := fiber.New()
 
 	// jwt := middlewares.NewAuthMiddleware(config.Secret)
 
-	routes.Setup(app, userController)
+	routes.Setup(app, userController, teamController)
 
 	err := app.Listen(":8000")
 	if err != nil {
